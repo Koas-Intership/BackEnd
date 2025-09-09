@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/meetingRoom/register").hasAnyRole("admin")
                         .anyRequest().authenticated()
                 );
         return http.build();

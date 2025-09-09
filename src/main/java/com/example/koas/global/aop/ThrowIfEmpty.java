@@ -1,7 +1,9 @@
 package com.example.koas.global.aop;
 
-import com.example.skillup.global.exception.ErrorCode;
-import com.example.skillup.global.exception.GlobalException;
+
+
+import com.example.koas.global.exception.ErrorCode;
+import com.example.koas.global.exception.GlobalException;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,6 +1,6 @@
 package com.example.koas.global.aop;
 
-import com.example.skillup.global.exception.ErrorCode;
+import com.example.koas.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

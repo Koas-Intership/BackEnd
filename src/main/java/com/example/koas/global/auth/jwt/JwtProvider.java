@@ -27,15 +27,15 @@ public class JwtProvider {
     }
 
 
-    public String generateToken(Long id, Duration expiredAt)
+    public String generateToken(Long id, String role,Duration expiredAt)
     {
-        String subject = id.toString();
+        String subject = id==null ? "admin":  id.toString();
         Date now = new Date();
 
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuer(jwtProperties.getIssuer())
-                .claim("roles", "worker")
+                .claim("roles", role)
                 .setIssuedAt(new Date())
                 .setExpiration((new Date(now.getTime() + expiredAt.toMillis())))
                 .signWith( getSigningKey(),SignatureAlgorithm.HS256)
