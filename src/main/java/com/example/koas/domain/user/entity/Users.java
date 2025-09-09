@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -33,20 +31,20 @@ public class Users
     private int age;
 
     @Column(length = 10, nullable = false)
-    private String role;
-
+    private String position;
 
     @Column(length = 20, nullable = false)
-    private String jobGroup;
+    private String department;
 
 
-    public static Users of(String email, String password, String name) {
+    public static Users of(String email, String password, String name, int age, String position, String department) {
         return Users.builder()
                 .email(email)
                 .password(password)
                 .name(name)
-                .role("USER")
-                .jobGroup("UNKNOWN")
+                .age(age)
+                .position(position)
+                .department(department)
                 .build();
     }
 

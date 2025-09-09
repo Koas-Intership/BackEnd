@@ -21,10 +21,10 @@ public class AuthService
     private static final Duration ACCESS_TOKEN_EXP = Duration.ofHours(1);
 
     @Transactional
-    public TokenResponse login(Long id) {
+    public TokenResponse login(Long id, String role) {
 
-        String accessToken = jwtProvider.generateToken(id,ACCESS_TOKEN_EXP);
-        String refreshToken = jwtProvider.generateToken(id,REFRESH_TOKEN_EXP);
+        String accessToken = jwtProvider.generateToken(id,role,ACCESS_TOKEN_EXP);
+        String refreshToken = jwtProvider.generateToken(id,role,REFRESH_TOKEN_EXP);
 
         refreshTokenRepository.save(RefreshToken.of(refreshToken));
 

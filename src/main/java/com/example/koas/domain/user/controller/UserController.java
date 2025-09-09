@@ -30,7 +30,7 @@ public class UserController
     {
         Users users = userService.login(request);
 
-        TokenResponse tokenResponse = authService.login(users.getId());
+        TokenResponse tokenResponse = authService.login(users.getId(),"users");
 
         return ResponseEntity.ok(tokenResponse);
     }
