@@ -36,7 +36,7 @@ public class AdminController
         return ResponseEntity.ok(tokenResponse);
     }
 
-    @PostMapping("/register/meetingRoom")
+    @PostMapping("/register/meeting-room")
     public ResponseEntity<MeetingRoomDto> register(@RequestBody MeetingRoomDto meetingRoomDto) {
         MeetingRoomDto saved = meetingRoomService.register(meetingRoomDto);
         return ResponseEntity.ok(saved);
