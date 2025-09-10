@@ -6,6 +6,8 @@ import com.example.koas.domain.meetingRoom.dto.ReservationCreateDto;
 import com.example.koas.domain.meetingRoom.dto.ReservationDto;
 import com.example.koas.domain.meetingRoom.service.MeetingRoomService;
 import com.example.koas.domain.meetingRoom.service.RoomReservationService;
+import com.example.koas.global.auth.jwt.JwtProvider;
+import com.example.koas.global.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class MeetingRoomController
 {
     private final MeetingRoomService meetingRoomService;
     private final RoomReservationService roomReservationService;
-
+    private final AuthService authService;
     @PostMapping("/register")
     public ResponseEntity<MeetingRoomDto> register(@RequestBody MeetingRoomDto meetingRoomDto) {
         MeetingRoomDto saved = meetingRoomService.register(meetingRoomDto);
@@ -30,7 +32,7 @@ public class MeetingRoomController
     @PostMapping("reservation")
     public ResponseEntity<ReservationDto> reserve(@RequestBody ReservationCreateDto reservationDto)
     {
-        return ResponseEntity.ok(roomReservationService.reserve(reservationDto));
+        return ResponseEntity.ok(roomReservationService.reserve(reservationDto,authService.getUserId()));
     }
 
 

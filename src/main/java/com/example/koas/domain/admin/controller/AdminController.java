@@ -1,6 +1,7 @@
 package com.example.koas.domain.admin.controller;
 
 import com.example.koas.domain.admin.dto.AdminLoginRequest;
+import com.example.koas.domain.admin.dto.EmployeeDto;
 import com.example.koas.domain.admin.entity.Admin;
 import com.example.koas.domain.admin.service.AdminService;
 import com.example.koas.global.auth.dto.response.TokenResponse;
@@ -25,10 +26,16 @@ public class AdminController
             @RequestBody @Valid AdminLoginRequest request
     )
     {
-        Admin admin = adminService.login(request);
+        adminService.login(request);
 
         TokenResponse tokenResponse = authService.login(null, "admin");
 
         return ResponseEntity.ok(tokenResponse);
+    }
+
+    @PostMapping("/register/employee")
+    public ResponseEntity<EmployeeDto> register(EmployeeDto employeeCreateDto)
+    {
+        return ResponseEntity.ok(adminService.register(employeeCreateDto));
     }
 }

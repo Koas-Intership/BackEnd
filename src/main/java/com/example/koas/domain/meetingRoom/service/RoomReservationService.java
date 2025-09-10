@@ -26,12 +26,14 @@ public class RoomReservationService
     private final MeetingRoomRepository meetingRoomRepository;
     private final UserRepository userRepository;
     @Transactional
-    public ReservationDto reserve(ReservationCreateDto reservationCreateDto) {
+    public ReservationDto reserve(ReservationCreateDto reservationCreateDto, Long userId) {
 
 
         MeetingRoom meetingRoom = meetingRoomRepository.findById(reservationCreateDto.meetingRoomId()).orElse(null);
 
-        if(meetingRoom != null&&meetingRoom.getCapacity() <reservationCreateDto.number())
+        if(meetingRoom == null)
+            throw new MeetingRoomException(ErrorCode.DATA_NOT_FOUND);
+        if(meetingRoom.getCapacity() <reservationCreateDto.number())
         {
             throw new MeetingRoomException(ErrorCode.EXCEEDS_CAPACITY);
         }
@@ -48,8 +50,8 @@ public class RoomReservationService
             }
         });
 
-        Users users=userRepository.findById(reservationCreateDto.userId()).orElse(null);
-        ;
+        Users users=userRepository.findById(userId).orElse(null);
+
         return ReservationDto
                 .of(roomReservationRepository.save(ReservationCreateDto.toEntity(reservationCreateDto,meetingRoom,users)));
 

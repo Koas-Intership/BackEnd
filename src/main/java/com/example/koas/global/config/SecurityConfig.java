@@ -24,8 +24,8 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login").permitAll()
-                        .requestMatchers("/meetingRoom/register").hasAnyRole("admin")
+                        .requestMatchers("/api/user/login").permitAll()
+                        .requestMatchers("/api/meetingRoom/register").hasAnyRole("admin")
                         .anyRequest().authenticated()
                 );
         return http.build();

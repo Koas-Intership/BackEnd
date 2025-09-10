@@ -65,10 +65,9 @@ public class JwtProvider {
                 new SimpleGrantedAuthority("ROLE_" + role)
         );
 
-        return new UsernamePasswordAuthenticationToken( new org.springframework.security.core.
-                userdetails
-                .User(claims.getSubject(),"",authorities ),
-                token, authorities);
+        Long userId = Long.valueOf(claims.getSubject());
+
+        return new UsernamePasswordAuthenticationToken(userId, token, authorities);
     }
 
     private Claims getClaims(String token)

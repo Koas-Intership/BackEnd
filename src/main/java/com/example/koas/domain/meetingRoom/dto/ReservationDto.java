@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record ReservationDto(
-        MeetingRoomDto meetingRoom,
-        UserResponseDto user,
+        String userName,
+        String meetingName,
         LocalDate reservationDate,
         LocalTime startTime,
         LocalTime endTime,
@@ -16,8 +16,8 @@ public record ReservationDto(
 ) {
     public static ReservationDto of(RoomReservation reservation) {
         return new ReservationDto(
-                MeetingRoomDto.of(reservation.getMeetingRoom()),
-                UserResponseDto.from(reservation.getUser()),
+                reservation.getUserName(),
+                reservation.getMeetingRoomName(),
                 reservation.getReservationDate(),
                 reservation.getStartTime(),
                 reservation.getEndTime(),

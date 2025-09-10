@@ -60,7 +60,6 @@ class RoomReservationServiceTest {
         // given
         ReservationCreateDto dto = new ReservationCreateDto(
                 1L,
-                1L,
                 8,
                 "회의",
                 LocalDate.of(2025, 9, 9),
@@ -76,7 +75,7 @@ class RoomReservationServiceTest {
         when(roomReservationRepository.save(any(RoomReservation.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        ReservationDto result = roomReservationService.reserve(dto);
+        ReservationDto result = roomReservationService.reserve(dto,1L);
 
         assertNotNull(result);
         assertEquals("회의", result.purpose());
@@ -87,7 +86,6 @@ class RoomReservationServiceTest {
         // given
         ReservationCreateDto dto = new ReservationCreateDto(
                 1L,
-                1L,
                 8,
                 "회의",
                 LocalDate.of(2025, 9, 9),
@@ -96,8 +94,6 @@ class RoomReservationServiceTest {
         );
 
         RoomReservation existing = RoomReservation.builder()
-                .meetingRoom(meetingRoom)
-                .user(user)
                 .reservationDate(dto.reservationDate())
                 .startTime(LocalTime.of(13, 0))
                 .endTime(LocalTime.of(14, 30))
@@ -111,7 +107,7 @@ class RoomReservationServiceTest {
 
         // when & then
         MeetingRoomException ex = assertThrows(MeetingRoomException.class, () -> {
-            roomReservationService.reserve(dto);
+            roomReservationService.reserve(dto,1L);
         });
 
         assertEquals(ErrorCode.TIME_CONFLICT, ex.getErrorCode());

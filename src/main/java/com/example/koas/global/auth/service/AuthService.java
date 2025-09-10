@@ -6,6 +6,8 @@ import com.example.koas.global.auth.RefreshToken.RefreshTokenRepository;
 import com.example.koas.global.auth.dto.response.TokenResponse;
 import com.example.koas.global.auth.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +31,11 @@ public class AuthService
         refreshTokenRepository.save(RefreshToken.of(refreshToken));
 
         return TokenResponse.of(accessToken,refreshToken);
+    }
+
+    public Long getUserId()
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (Long) auth.getPrincipal();
     }
 }
