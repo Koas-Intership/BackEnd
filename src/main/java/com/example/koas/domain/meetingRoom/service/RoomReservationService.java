@@ -28,7 +28,14 @@ public class RoomReservationService
     @Transactional
     public ReservationDto reserve(ReservationCreateDto reservationCreateDto) {
 
+
         MeetingRoom meetingRoom = meetingRoomRepository.findById(reservationCreateDto.meetingRoomId()).orElse(null);
+
+        if(meetingRoom != null&&meetingRoom.getCapacity() <reservationCreateDto.number())
+        {
+            throw new MeetingRoomException(ErrorCode.EXCEEDS_CAPACITY);
+        }
+
         Optional<RoomReservation> lastReservationOpt =
                 roomReservationRepository.findTopByMeetingRoomAndReservationDateOrderByEndTimeDesc(
                         meetingRoom,

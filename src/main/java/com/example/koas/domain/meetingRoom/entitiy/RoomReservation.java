@@ -44,4 +44,6 @@ public class RoomReservation {
 
     private String purpose;
 
+    private int number;
+
 }

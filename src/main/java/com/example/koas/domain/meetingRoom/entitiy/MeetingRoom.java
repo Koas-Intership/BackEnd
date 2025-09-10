@@ -28,8 +28,7 @@ public class MeetingRoom
     @Column(nullable = false)
     private int floor;
 
-    @Column
-    private boolean isReserved;
+
 
     public static MeetingRoom of(String name, int capacity, int floor)
     {
@@ -37,7 +36,6 @@ public class MeetingRoom
                 .name(name)
                 .floor(floor)
                 .capacity(capacity)
-                .isReserved(false)
                 .build();
     }
 

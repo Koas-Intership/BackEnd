@@ -61,11 +61,13 @@ class RoomReservationServiceTest {
         ReservationCreateDto dto = new ReservationCreateDto(
                 1L,
                 1L,
+                8,
                 "회의",
                 LocalDate.of(2025, 9, 9),
                 LocalTime.of(14, 0),
                 LocalTime.of(15, 0)
         );
+
 
         when(meetingRoomRepository.findById(1L)).thenReturn(Optional.of(meetingRoom));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -86,6 +88,7 @@ class RoomReservationServiceTest {
         ReservationCreateDto dto = new ReservationCreateDto(
                 1L,
                 1L,
+                8,
                 "회의",
                 LocalDate.of(2025, 9, 9),
                 LocalTime.of(14, 0),

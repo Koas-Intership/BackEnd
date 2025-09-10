@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController
 {
@@ -34,6 +34,8 @@ public class UserController
 
         return ResponseEntity.ok(tokenResponse);
     }
+
+
 
     @GetMapping("/all")
     public ResponseEntity<List<UserResponseDto>> findAll()
