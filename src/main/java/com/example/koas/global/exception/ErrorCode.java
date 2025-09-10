@@ -12,7 +12,17 @@ public enum ErrorCode
     INVALID_PASSWORD("INVALID_PASSWORD", "비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
     EXCEEDS_CAPACITY("EXCEEDS_CAPACITY", "회의실 가용 인원을 초과했습니다.", HttpStatus.BAD_REQUEST),
     TIME_CONFLICT("RESERVATION_CONFLICT", "이미 예약된 시간과 겹칩니다.",HttpStatus.CONFLICT),
-    SAVE_FAILED("SAVE_FAILED", "저장이 되지 않았습니다. 다시 시도해주세요.", HttpStatus.INTERNAL_SERVER_ERROR);
+    SAVE_FAILED("SAVE_FAILED", "저장이 되지 않았습니다. 다시 시도해주세요.", HttpStatus.INTERNAL_SERVER_ERROR),
+    CANCEL_UNAUTHORIZED(
+            "CANCEL_UNAUTHORIZED",
+            "예약자 명과 달라 예약취소가 불가합니다.",
+            HttpStatus.FORBIDDEN
+    ),
+    ALREADY_REGISTERED(
+        "ALREADY_REGISTERED",
+                "이미 등록된 회원입니다.",
+        HttpStatus.CONFLICT
+        );
     private final String code;
     private final String message;
     private final HttpStatus status;

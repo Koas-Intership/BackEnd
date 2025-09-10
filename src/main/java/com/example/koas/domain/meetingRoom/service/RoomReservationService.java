@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +41,8 @@ public class RoomReservationService
         }
 
         Optional<RoomReservation> lastReservationOpt =
-                roomReservationRepository.findTopByMeetingRoomAndReservationDateOrderByEndTimeDesc(
-                        meetingRoom,
+                roomReservationRepository.findTopByMeetingRoomIdAndReservationDateOrderByEndTimeDesc(
+                        meetingRoom.getId(),
                         reservationCreateDto.reservationDate()
                 );
 
@@ -55,5 +57,23 @@ public class RoomReservationService
         return ReservationDto
                 .of(roomReservationRepository.save(ReservationCreateDto.toEntity(reservationCreateDto,meetingRoom,users)));
 
+    }
+
+    @Transactional
+    public void cancelReservation(Long reservationId,Long userId) {
+        RoomReservation reservation = roomReservationRepository.findById(reservationId)
+                .orElseThrow(() -> new MeetingRoomException(ErrorCode.DATA_NOT_FOUND));
+        if(!reservation.getUserId().equals(userId))
+            throw new MeetingRoomException(ErrorCode.CANCEL_UNAUTHORIZED);
+        roomReservationRepository.delete(reservation);
+    }
+    public List<ReservationDto> findAll()
+    {
+        return roomReservationRepository.findAll().stream().map(ReservationDto::of).collect(Collectors.toList());
+    }
+
+    public List<ReservationDto> findMyReservations(Long userId)
+    {
+        return roomReservationRepository.findAll().stream().map(ReservationDto::of).collect(Collectors.toList());
     }
 }

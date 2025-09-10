@@ -10,24 +10,18 @@ import com.example.koas.global.auth.jwt.JwtProvider;
 import com.example.koas.global.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/meeting-room")
 @RequiredArgsConstructor
 public class MeetingRoomController
 {
-    private final MeetingRoomService meetingRoomService;
     private final RoomReservationService roomReservationService;
+    private final MeetingRoomService meetingRoomService;
     private final AuthService authService;
-    @PostMapping("/register")
-    public ResponseEntity<MeetingRoomDto> register(@RequestBody MeetingRoomDto meetingRoomDto) {
-        MeetingRoomDto saved = meetingRoomService.register(meetingRoomDto);
-        return ResponseEntity.ok(saved);
-    }
 
     @PostMapping("reservation")
     public ResponseEntity<ReservationDto> reserve(@RequestBody ReservationCreateDto reservationDto)
@@ -35,5 +29,28 @@ public class MeetingRoomController
         return ResponseEntity.ok(roomReservationService.reserve(reservationDto,authService.getUserId()));
     }
 
+    @DeleteMapping("/reservation/{reservationId}")
+    public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
+        roomReservationService.cancelReservation(reservationId,authService.getUserId());
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<MeetingRoomDto>> getAllMeetingRooms()
+    {
+        return ResponseEntity.ok(meetingRoomService.findAll());
+    }
+
+    @GetMapping("reservation/all")
+    public ResponseEntity<List<ReservationDto>> getAllReservation()
+    {
+        return ResponseEntity.ok(roomReservationService.findAll());
+    }
+
+    @GetMapping("reservation/mine")
+    public ResponseEntity<List<ReservationDto>> getAllMyReservation()
+    {
+        return ResponseEntity.ok(roomReservationService.findMyReservations(authService.getUserId()));
+    }
 
 }

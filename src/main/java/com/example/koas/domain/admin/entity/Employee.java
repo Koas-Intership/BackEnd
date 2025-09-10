@@ -27,4 +27,10 @@ public class Employee
     private String phoneNumber;
 
     private String birthDate;
+
+    private boolean isRegistered=false;
+
+    public void setRegistered(boolean registered) {
+        this.isRegistered=registered;
+    }
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -28,7 +29,8 @@ public class Users
     @Column(nullable = false, length = 50)
     private String name;
 
-    private int age;
+    @Column(length = 10, nullable = false)
+    private String birthDate;
 
     @Column(length = 10, nullable = false)
     private String position;
@@ -36,19 +38,24 @@ public class Users
     @Column(length = 20, nullable = false)
     private String department;
 
+    @Column(length = 20, nullable = false)
+    private String phone;
 
-    public static Users of(String email, String password, String name, int age, String position, String department) {
+
+    public static Users of(String email, String password, String name
+            , String birthDate, String position, String department, String phone) {
         return Users.builder()
                 .email(email)
                 .password(password)
                 .name(name)
-                .age(age)
+                .birthDate(birthDate)
                 .position(position)
                 .department(department)
+                .phone(phone)
                 .build();
     }
 
-    public boolean isPasswordMatch(String rawPassword) {
-        return this.password.equals(rawPassword);
+    public boolean isPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, this.password);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.koas.domain.user.controller;
 
 
+import com.example.koas.domain.admin.dto.EmployeeDto;
 import com.example.koas.domain.user.dto.request.UserLoginRequestDto;
+import com.example.koas.domain.user.dto.request.UserRegisterDto;
 import com.example.koas.domain.user.dto.response.UserResponseDto;
 import com.example.koas.domain.user.entity.Users;
 import com.example.koas.domain.user.service.UserService;
@@ -23,17 +25,7 @@ public class UserController
     private final UserService userService;
 
     private final AuthService authService;
-    @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(
-            @RequestBody @Valid UserLoginRequestDto request
-    )
-    {
-        Users users = userService.login(request);
 
-        TokenResponse tokenResponse = authService.login(users.getId(),"users");
-
-        return ResponseEntity.ok(tokenResponse);
-    }
 
 
 
@@ -42,5 +34,29 @@ public class UserController
     {
         return  ResponseEntity.status(HttpStatus.OK)
                 .body(userService.findAll());
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<Void> verifyEmployee(@RequestBody EmployeeDto employeeDto) {
+        userService.verifyEmployee(employeeDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Users> register(@RequestBody UserRegisterDto dto) {
+        Users savedUser = userService.register(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> login(
+            @RequestBody @Valid UserLoginRequestDto request
+    )
+    {
+        Users user=userService.login(request);
+
+        TokenResponse tokenResponse = authService.login(user.getId(), "users");
+
+        return ResponseEntity.ok(tokenResponse);
     }
 }

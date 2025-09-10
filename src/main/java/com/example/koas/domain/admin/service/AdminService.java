@@ -24,7 +24,7 @@ public class AdminService {
     {
 
         Admin admin = adminRepository.findByEmail(request.email())
-                .orElseThrow(() -> new AdminException(ErrorCode.DATA_NOT_FOUND,"Email이 "+request.email()+"인"));
+                .orElseThrow(() -> new AdminException(ErrorCode.DATA_NOT_FOUND,"Email이 "+request.email()+"인 어드민 계정이 존재 하지 않습니다."));
 
         if(admin.isPasswordMatch(request.password()))
             return admin;

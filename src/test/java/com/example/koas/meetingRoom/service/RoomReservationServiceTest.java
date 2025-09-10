@@ -70,7 +70,7 @@ class RoomReservationServiceTest {
 
         when(meetingRoomRepository.findById(1L)).thenReturn(Optional.of(meetingRoom));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(roomReservationRepository.findTopByMeetingRoomAndReservationDateOrderByEndTimeDesc(meetingRoom, dto.reservationDate()))
+        when(roomReservationRepository.findTopByMeetingRoomIdAndReservationDateOrderByEndTimeDesc(meetingRoom.getId(), dto.reservationDate()))
                 .thenReturn(Optional.empty());
         when(roomReservationRepository.save(any(RoomReservation.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
@@ -102,7 +102,7 @@ class RoomReservationServiceTest {
 
         when(meetingRoomRepository.findById(1L)).thenReturn(Optional.of(meetingRoom));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(roomReservationRepository.findTopByMeetingRoomAndReservationDateOrderByEndTimeDesc(meetingRoom, dto.reservationDate()))
+        when(roomReservationRepository.findTopByMeetingRoomIdAndReservationDateOrderByEndTimeDesc(meetingRoom.getId(), dto.reservationDate()))
                 .thenReturn(Optional.of(existing));
 
         // when & then
