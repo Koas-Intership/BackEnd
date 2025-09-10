@@ -69,7 +69,7 @@ public class UserService
     }
 
     @Transactional
-    public Users register(UserRegisterDto dto) {
+    public UserResponseDto register(UserRegisterDto dto) {
 
         Users user = Users.builder()
                 .email(dto.email())
@@ -81,7 +81,7 @@ public class UserService
                 .phone(dto.phoneNumber())
                 .build();
 
-        return usersRepository.save(user);
+        return UserResponseDto.from(usersRepository.save(user));
     }
 
     public Users login(UserLoginRequestDto request)
