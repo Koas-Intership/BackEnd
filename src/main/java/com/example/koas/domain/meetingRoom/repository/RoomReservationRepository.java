@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RoomReservationRepository extends JpaRepository<RoomReservation, Long>
 {
-    Optional<RoomReservation> findTopByMeetingRoomAndReservationDateOrderByEndTimeDesc(
-            MeetingRoom meetingRoom, LocalDate reservationDate
+    Optional<RoomReservation> findTopByMeetingRoomIdAndReservationDateOrderByEndTimeDesc(
+            Long meetingRoomId, LocalDate reservationDate
     );
 }

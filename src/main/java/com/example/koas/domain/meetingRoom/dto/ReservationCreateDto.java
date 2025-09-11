@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 public record ReservationCreateDto(
         Long meetingRoomId,
-        Long userId,
+        int number,
         String purpose,
         LocalDate reservationDate,
         LocalTime startTime,
@@ -25,8 +25,11 @@ public record ReservationCreateDto(
             Users user
     ) {
         return RoomReservation.builder()
-                .meetingRoom(meetingRoom)
-                .user(user)
+                .meetingRoomId(meetingRoom.getId())
+                .meetingRoomName(meetingRoom.getName())
+                .userId(user.getId())
+                .userName(user.getName())
+                .number(dto.number())
                 .purpose(dto.purpose())
                 .reservationDate(dto.reservationDate())
                 .startTime(dto.startTime())

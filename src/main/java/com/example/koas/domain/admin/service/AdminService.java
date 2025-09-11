@@ -1,9 +1,12 @@
 package com.example.koas.domain.admin.service;
 
 import com.example.koas.domain.admin.Exception.AdminException;
+import com.example.koas.domain.admin.Exception.EmployeeException;
 import com.example.koas.domain.admin.dto.AdminLoginRequest;
+import com.example.koas.domain.admin.dto.EmployeeDto;
 import com.example.koas.domain.admin.entity.Admin;
 import com.example.koas.domain.admin.repository.AdminRepository;
+import com.example.koas.domain.admin.repository.EmployeeRepository;
 import com.example.koas.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,18 +18,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminService {
 
     private final AdminRepository adminRepository;
-
+    private final EmployeeRepository employeeRepository;
 
     public Admin login(AdminLoginRequest request)
     {
 
         Admin admin = adminRepository.findByEmail(request.email())
-                .orElseThrow(() -> new AdminException(ErrorCode.DATA_NOT_FOUND,"Email이 "+request.email()+"인"));
+                .orElseThrow(() -> new AdminException(ErrorCode.DATA_NOT_FOUND,"Email이 "+request.email()+"인 어드민 계정이 존재 하지 않습니다."));
 
         if(admin.isPasswordMatch(request.password()))
             return admin;
         else
             throw new AdminException(ErrorCode.INVALID_PASSWORD);
+    }
+
+    public EmployeeDto register(EmployeeDto employeeDto)
+    {
+        try {
+            employeeRepository.save(EmployeeDto.toEntity(employeeDto));
+        } catch (Exception e) {
+            throw new EmployeeException(ErrorCode.SAVE_FAILED);
+        }
+       return employeeDto;
     }
 
 }

@@ -23,15 +23,17 @@ public class RoomReservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Long meetingRoomId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meeting_room_id", nullable = false)
-    private MeetingRoom meetingRoom;
+    @Column(nullable = false)
+    private String meetingRoomName;
 
+    @Column(nullable = false)
+    private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private Users user;
+    @Column(nullable = false)
+    private String userName;
 
     @Column(nullable = false)
     private LocalDate reservationDate;
@@ -43,5 +45,7 @@ public class RoomReservation {
     private LocalTime endTime;
 
     private String purpose;
+
+    private int number;
 
 }

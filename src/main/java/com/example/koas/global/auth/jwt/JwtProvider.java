@@ -1,10 +1,12 @@
 package com.example.koas.global.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,10 +67,9 @@ public class JwtProvider {
                 new SimpleGrantedAuthority("ROLE_" + role)
         );
 
-        return new UsernamePasswordAuthenticationToken( new org.springframework.security.core.
-                userdetails
-                .User(claims.getSubject(),"",authorities ),
-                token, authorities);
+        Long userId = Long.valueOf(claims.getSubject());
+
+        return new UsernamePasswordAuthenticationToken(userId, token, authorities);
     }
 
     private Claims getClaims(String token)
@@ -79,5 +80,27 @@ public class JwtProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String resolveAccessToken(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (bearer != null && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
+        }
+        return null;
+    }
+
+    public String resolveRefreshToken(HttpServletRequest request) {
+        return request.getHeader("Refresh-Token");
+    }
+
+    public boolean isExpired(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build()
+                    .parseClaimsJws(token).getBody();
+            return claims.getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 }
