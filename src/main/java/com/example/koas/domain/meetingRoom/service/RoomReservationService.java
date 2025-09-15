@@ -3,7 +3,8 @@ package com.example.koas.domain.meetingRoom.service;
 
 import com.example.koas.domain.meetingRoom.Exception.MeetingRoomException;
 import com.example.koas.domain.meetingRoom.dto.ReservationCreateDto;
-import com.example.koas.domain.meetingRoom.dto.ReservationDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationRequestDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationResponseDto;
 import com.example.koas.domain.meetingRoom.entitiy.MeetingRoom;
 import com.example.koas.domain.meetingRoom.entitiy.RoomReservation;
 import com.example.koas.domain.meetingRoom.repository.MeetingRoomRepository;
@@ -28,7 +29,7 @@ public class RoomReservationService
     private final MeetingRoomRepository meetingRoomRepository;
     private final UserRepository userRepository;
     @Transactional
-    public ReservationDto reserve(ReservationCreateDto reservationCreateDto, Long userId) {
+    public ReservationResponseDto reserve(ReservationCreateDto reservationCreateDto, Long userId) {
 
 
         MeetingRoom meetingRoom = meetingRoomRepository.findById(reservationCreateDto.meetingRoomId()).orElse(null);
@@ -54,7 +55,7 @@ public class RoomReservationService
 
         Users users=userRepository.findById(userId).orElse(null);
 
-        return ReservationDto
+        return ReservationResponseDto
                 .of(roomReservationRepository.save(ReservationCreateDto.toEntity(reservationCreateDto,meetingRoom,users)));
 
     }
@@ -67,13 +68,13 @@ public class RoomReservationService
             throw new MeetingRoomException(ErrorCode.CANCEL_UNAUTHORIZED);
         roomReservationRepository.delete(reservation);
     }
-    public List<ReservationDto> findAll()
+    public List<ReservationResponseDto> findAll()
     {
-        return roomReservationRepository.findAll().stream().map(ReservationDto::of).collect(Collectors.toList());
+        return roomReservationRepository.findAll().stream().map(ReservationResponseDto::of).collect(Collectors.toList());
     }
 
-    public List<ReservationDto> findMyReservations(Long userId)
+    public List<ReservationResponseDto> findMyReservations(Long userId)
     {
-        return roomReservationRepository.findAll().stream().map(ReservationDto::of).collect(Collectors.toList());
+        return roomReservationRepository.findAll().stream().map(ReservationResponseDto::of).collect(Collectors.toList());
     }
 }

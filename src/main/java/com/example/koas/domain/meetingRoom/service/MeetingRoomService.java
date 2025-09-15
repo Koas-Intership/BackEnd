@@ -2,7 +2,6 @@ package com.example.koas.domain.meetingRoom.service;
 
 
 import com.example.koas.domain.meetingRoom.dto.MeetingRoomDto;
-import com.example.koas.domain.meetingRoom.dto.ReservationDto;
 import com.example.koas.domain.meetingRoom.repository.MeetingRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

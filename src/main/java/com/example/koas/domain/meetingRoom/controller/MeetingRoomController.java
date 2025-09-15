@@ -3,10 +3,10 @@ package com.example.koas.domain.meetingRoom.controller;
 
 import com.example.koas.domain.meetingRoom.dto.MeetingRoomDto;
 import com.example.koas.domain.meetingRoom.dto.ReservationCreateDto;
-import com.example.koas.domain.meetingRoom.dto.ReservationDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationRequestDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationResponseDto;
 import com.example.koas.domain.meetingRoom.service.MeetingRoomService;
 import com.example.koas.domain.meetingRoom.service.RoomReservationService;
-import com.example.koas.global.auth.jwt.JwtProvider;
 import com.example.koas.global.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class MeetingRoomController
     private final AuthService authService;
 
     @PostMapping("reservation")
-    public ResponseEntity<ReservationDto> reserve(@RequestBody ReservationCreateDto reservationDto)
+    public ResponseEntity<ReservationResponseDto> reserve(@RequestBody ReservationCreateDto reservationDto)
     {
         return ResponseEntity.ok(roomReservationService.reserve(reservationDto,authService.getUserId()));
     }
@@ -42,13 +42,13 @@ public class MeetingRoomController
     }
 
     @GetMapping("reservation/all")
-    public ResponseEntity<List<ReservationDto>> getAllReservation()
+    public ResponseEntity<List<ReservationResponseDto>> getAllReservation()
     {
         return ResponseEntity.ok(roomReservationService.findAll());
     }
 
     @GetMapping("reservation/mine")
-    public ResponseEntity<List<ReservationDto>> getAllMyReservation()
+    public ResponseEntity<List<ReservationResponseDto>> getAllMyReservation()
     {
         return ResponseEntity.ok(roomReservationService.findMyReservations(authService.getUserId()));
     }

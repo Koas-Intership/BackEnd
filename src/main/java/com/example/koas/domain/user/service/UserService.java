@@ -95,4 +95,9 @@ public class UserService
         else
             throw new AdminException(ErrorCode.INVALID_PASSWORD);
     }
+
+    public UserResponseDto getCurrentUser(Long userId)
+    {
+        return UserResponseDto.from(usersRepository.findById(userId).orElseThrow(() -> new UserException(ErrorCode.DATA_NOT_FOUND)));
+    }
 }

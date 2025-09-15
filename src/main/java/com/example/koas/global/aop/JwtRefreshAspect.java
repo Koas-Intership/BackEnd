@@ -37,7 +37,7 @@ public class JwtRefreshAspect {
                 .getResponse();
 
         String accessToken = jwtProvider.resolveAccessToken(request);
-
+        if(accessToken == null)  return joinPoint.proceed();
         if (jwtProvider.isExpired(accessToken)) {
             Long userId = authService.getUserId();
             RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)

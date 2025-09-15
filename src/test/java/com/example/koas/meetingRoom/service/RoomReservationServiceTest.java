@@ -5,7 +5,8 @@ import static org.mockito.Mockito.*;
 
 import com.example.koas.domain.meetingRoom.Exception.MeetingRoomException;
 import com.example.koas.domain.meetingRoom.dto.ReservationCreateDto;
-import com.example.koas.domain.meetingRoom.dto.ReservationDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationRequestDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationResponseDto;
 import com.example.koas.domain.meetingRoom.entitiy.MeetingRoom;
 import com.example.koas.domain.meetingRoom.entitiy.RoomReservation;
 import com.example.koas.domain.meetingRoom.repository.MeetingRoomRepository;
@@ -75,7 +76,7 @@ class RoomReservationServiceTest {
         when(roomReservationRepository.save(any(RoomReservation.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        ReservationDto result = roomReservationService.reserve(dto,1L);
+        ReservationResponseDto result = roomReservationService.reserve(dto,1L);
 
         assertNotNull(result);
         assertEquals("회의", result.purpose());
