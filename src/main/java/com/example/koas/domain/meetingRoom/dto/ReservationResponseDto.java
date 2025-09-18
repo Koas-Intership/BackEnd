@@ -1,12 +1,12 @@
 package com.example.koas.domain.meetingRoom.dto;
 
 import com.example.koas.domain.meetingRoom.entitiy.RoomReservation;
-import com.example.koas.domain.user.dto.response.UserResponseDto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record ReservationDto(
+public record ReservationResponseDto(
+        Long id,
         String userName,
         String meetingName,
         LocalDate reservationDate,
@@ -14,8 +14,9 @@ public record ReservationDto(
         LocalTime endTime,
         String purpose
 ) {
-    public static ReservationDto of(RoomReservation reservation) {
-        return new ReservationDto(
+    public static ReservationResponseDto of(RoomReservation reservation) {
+        return new ReservationResponseDto(
+                reservation.getId(),
                 reservation.getUserName(),
                 reservation.getMeetingRoomName(),
                 reservation.getReservationDate(),

@@ -23,19 +23,33 @@ public class AuthService
     private static final Duration ACCESS_TOKEN_EXP = Duration.ofHours(1);
 
     @Transactional
-    public TokenResponse login(Long id, String role) {
+    public TokenResponse login(Long id, String role)
+    {
 
         String accessToken = jwtProvider.generateToken(id,role,ACCESS_TOKEN_EXP);
         String refreshToken = jwtProvider.generateToken(id,role,REFRESH_TOKEN_EXP);
 
-        refreshTokenRepository.save(RefreshToken.of(refreshToken));
+        refreshTokenRepository.findByUserId(id)
+                .ifPresentOrElse(
+                        existing -> existing.updateToken(refreshToken),
+                        () -> refreshTokenRepository.save(RefreshToken.of(id, refreshToken))
+                );
 
         return TokenResponse.of(accessToken,refreshToken);
     }
 
     public Long getUserId()
     {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (Long) auth.getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        System.out.println(principal);
+
+        if (principal instanceof Long) {
+            return (Long) principal;
+        } else if (principal instanceof String) {
+            return Long.valueOf((String) principal);
+        } else {
+            throw new IllegalStateException("Principal 타입 알 수 없음: " + principal.getClass());
+        }
     }
 }

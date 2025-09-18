@@ -23,7 +23,7 @@ public class Users
     @Column(nullable = false, unique = true, length = 20)
     private String email;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Column(nullable = false, length = 50)
@@ -57,5 +57,9 @@ public class Users
 
     public boolean isPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(rawPassword, this.password);
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
     }
 }

@@ -3,6 +3,7 @@ package com.example.koas.domain.meetingRoom.dto;
 import com.example.koas.domain.meetingRoom.entitiy.MeetingRoom;
 
 public record MeetingRoomDto(
+        Long id,
         String name,
         int capacity,
         int floor
@@ -10,6 +11,7 @@ public record MeetingRoomDto(
 {
     public static MeetingRoomDto of(MeetingRoom meetingRoom) {
         return new MeetingRoomDto(
+                meetingRoom.getId(),
                 meetingRoom.getName(),
                 meetingRoom.getCapacity(),
                 meetingRoom.getFloor()

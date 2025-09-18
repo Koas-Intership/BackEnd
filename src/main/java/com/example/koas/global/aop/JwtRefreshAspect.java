@@ -27,9 +27,7 @@ public class JwtRefreshAspect {
     private final JwtProvider jwtProvider;
     private final AuthService authService;
     private final RefreshTokenRepository refreshTokenRepository;
-    @Around("@annotation(org.springframework.web.bind.annotation.RequestMapping) || " +
-            "@annotation(org.springframework.web.bind.annotation.GetMapping) || " +
-            "@annotation(org.springframework.web.bind.annotation.PostMapping)")
+    @Around("@annotation(com.example.koas.global.aop.RefreshTokenCheck)")
     public Object refreshAccessToken(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
@@ -37,7 +35,7 @@ public class JwtRefreshAspect {
                 .getResponse();
 
         String accessToken = jwtProvider.resolveAccessToken(request);
-
+        if(accessToken == null)  return joinPoint.proceed();
         if (jwtProvider.isExpired(accessToken)) {
             Long userId = authService.getUserId();
             RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
