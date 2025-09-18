@@ -1,6 +1,5 @@
 package com.example.koas.domain.meetingRoom.entitiy;
 
-import com.example.koas.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

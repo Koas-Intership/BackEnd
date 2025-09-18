@@ -5,6 +5,7 @@ import com.example.koas.domain.meetingRoom.Exception.MeetingRoomException;
 import com.example.koas.domain.meetingRoom.dto.ReservationCreateDto;
 import com.example.koas.domain.meetingRoom.dto.ReservationRequestDto;
 import com.example.koas.domain.meetingRoom.dto.ReservationResponseDto;
+import com.example.koas.domain.meetingRoom.dto.ReservationSearchDto;
 import com.example.koas.domain.meetingRoom.entitiy.MeetingRoom;
 import com.example.koas.domain.meetingRoom.entitiy.RoomReservation;
 import com.example.koas.domain.meetingRoom.repository.MeetingRoomRepository;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,6 +77,26 @@ public class RoomReservationService
 
     public List<ReservationResponseDto> findMyReservations(Long userId)
     {
-        return roomReservationRepository.findAll().stream().map(ReservationResponseDto::of).collect(Collectors.toList());
+        return roomReservationRepository.findAllByUserId(userId).stream().map(ReservationResponseDto::of).collect(Collectors.toList());
+    }
+    public List<ReservationResponseDto> getReservationsByDate(ReservationSearchDto searchDto) {
+        if (searchDto.day() != null && !searchDto.day().isEmpty()) {
+            LocalDate date = LocalDate.of(
+                    Integer.parseInt(searchDto.year()),
+                    Integer.parseInt(searchDto.month()),
+                    Integer.parseInt(searchDto.day())
+            );
+            return roomReservationRepository.findAllByReservationDateOrderByReservationDateAscStartTimeAsc(date).stream()
+                    .map(ReservationResponseDto::of)
+                    .collect(Collectors.toList());
+        } else {
+            int year = Integer.parseInt(searchDto.year());
+            int month = Integer.parseInt(searchDto.month());
+            LocalDate startDate = LocalDate.of(year, month, 1);
+            LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+            return roomReservationRepository.findAllByReservationDateBetweenOrderByReservationDateAscStartTimeAsc(startDate, endDate).stream()
+                    .map(ReservationResponseDto::of)
+                    .collect(Collectors.toList());
+        }
     }
 }

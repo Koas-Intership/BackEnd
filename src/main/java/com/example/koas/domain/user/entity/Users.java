@@ -58,4 +58,8 @@ public class Users
     public boolean isPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(rawPassword, this.password);
     }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }

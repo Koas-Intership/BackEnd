@@ -7,6 +7,7 @@ import com.example.koas.domain.user.dto.request.UserRegisterDto;
 import com.example.koas.domain.user.dto.response.UserResponseDto;
 import com.example.koas.domain.user.entity.Users;
 import com.example.koas.domain.user.service.UserService;
+import com.example.koas.global.aop.RefreshTokenCheck;
 import com.example.koas.global.auth.dto.response.TokenResponse;
 import com.example.koas.global.auth.service.AuthService;
 import jakarta.validation.Valid;
@@ -30,6 +31,7 @@ public class UserController
 
 
     @GetMapping("/all")
+    @RefreshTokenCheck
     public ResponseEntity<List<UserResponseDto>> findAll()
     {
         return  ResponseEntity.status(HttpStatus.OK)
@@ -37,6 +39,7 @@ public class UserController
     }
 
     @GetMapping("/verify")
+    @RefreshTokenCheck
     public ResponseEntity<Void> verifyEmployee(@RequestBody EmployeeDto employeeDto) {
         userService.verifyEmployee(employeeDto);
         return ResponseEntity.ok().build();
@@ -59,7 +62,19 @@ public class UserController
         return ResponseEntity.ok(tokenResponse);
     }
 
+
+    @PatchMapping("/change-password")
+    public ResponseEntity<Void> changePassword(
+            @RequestBody String newPassword) {
+
+        userService.changePassword(authService.getUserId(), newPassword);
+        return ResponseEntity.ok().build();
+    }
+
+
+
     @GetMapping("/me")
+    @RefreshTokenCheck
     public ResponseEntity<UserResponseDto> getCurrentUser() {
         return ResponseEntity.ok( userService.getCurrentUser(authService.getUserId()));
     }

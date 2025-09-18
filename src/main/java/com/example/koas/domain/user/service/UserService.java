@@ -100,4 +100,11 @@ public class UserService
     {
         return UserResponseDto.from(usersRepository.findById(userId).orElseThrow(() -> new UserException(ErrorCode.DATA_NOT_FOUND)));
     }
+
+    public void changePassword(Long userId, String newPassword) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new UserException(ErrorCode.DATA_NOT_FOUND,"Id가 "+userId+"인 유저 계정이 존재 하지 않습니다."));
+
+        user.updatePassword(passwordEncoder.encode(newPassword));
+    }
 }
